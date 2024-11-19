@@ -1,16 +1,35 @@
 package ie.setu
 
+import ie.setu.controllers.CoachController
+import ie.setu.controllers.PlayerController
+import ie.setu.controllers.TeamController
+import ie.setu.utils.readNextInt
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
-    val name = "Kotlin"
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    println("Hello, " + name + "!")
+val coachController = CoachController()
+val playerController = PlayerController()
+val teamController = TeamController()
+    mainMenu()
+}
 
-    for (i in 1..5) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        println("i = $i")
-    }
+fun mainMenu(): Int {
+    print(
+        """
+          > ---------------------------------
+          > |     Player & Coaches APP      |
+          > ---------------------------------
+          > |   1. PLayer Options           |
+          > --------------------------------- 
+          > |   2. Coach Options            |
+          > ---------------------------------
+          > |   8. Save Changes             |
+          > |   9. Load Players and Coaches |
+          > ---------------------------------
+          > |   0. Exit                     |
+          > ---------------------------------
+        """.trimMargin(">")
+    )
+    return readNextInt(" ==> ")
 }
