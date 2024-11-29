@@ -3,7 +3,8 @@ import ie.setu.models.Team
 
 class TeamController {
     private val team = mutableListOf<Team>()
-    fun addPlayerToTeam(playerId: Int, TeamId: Int) {
-        team.add(Team(playerId, TeamId))
+
+    fun addPlayerToCoach(playerId: Int, coachId: Int) {
+        team.add(Team(playerId, coachId))
     }
-    fun listPlayersInTeam(TeamId: Int) = team.filter { it.TeamId == TeamId } }
+    fun listPlayersInTeam(coachId: Int) = team.filter { it.coachId == coachId } }
