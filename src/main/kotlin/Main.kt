@@ -8,12 +8,16 @@ import ie.setu.models.Coach
 import ie.setu.models.Player
 import ie.setu.utils.readNextInt
 import ie.setu.utils.readNextLine
+import io.github.oshai.kotlinlogging.KotlinLogging
 
+
+val logger = KotlinLogging.logger {}
 val coachController = CoachController()
 val playerController = PlayerController()
 val teamController = TeamController()//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
+    logger.info {"Running Player & Coaches APP"}
     runMenu()
 }
 
@@ -48,6 +52,7 @@ fun runMenu() {
    }
 
     fun coachMenu(){
+        logger.info { "Launching Coach Menu" }
         val input = readNextInt(
             """
                 >------------------------
