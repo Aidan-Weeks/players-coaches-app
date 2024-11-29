@@ -8,8 +8,7 @@ class PlayerController {
 
     fun addPlayer(player: Player) {
         player.playerId = getId()
-        player.name =
-        players.add(player)
+        player.name = players.add(player).toString()
     }
 
     fun listPlayers() = players
