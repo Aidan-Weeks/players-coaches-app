@@ -11,6 +11,6 @@ class CoachController {
         coach.coachId = getId()
         coaches.add(coach)
     }
-
     fun listcoaches() = coaches
+    fun numberOfCoaches() = coaches.size
 }
