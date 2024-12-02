@@ -1,5 +1,4 @@
 package ie.setu.controllers
-
 import ie.setu.models.Coach
 
 class CoachController {
@@ -11,6 +10,20 @@ class CoachController {
         coach.coachId = getId()
        return coaches.add(coach)
     }
-    fun listCoaches() = coaches
+    fun listCoaches(): String =
+        if (coaches.isEmpty()) {
+            "No coaches in system"
+        }else{
+            formatListString(coaches.filter { coaches ->!coaches.isCoachArchived })
+        }
+
     fun numberOfCoaches() = coaches.size
+
+
+    private fun formatListString(coachesToFormat: List<Coach>): String =
+        coachesToFormat
+            .joinToString(separator = "\n") { coach ->
+                coaches.indexOf(coach).toString() + ": " + coach.toString()
+            }
 }
+

@@ -76,7 +76,7 @@ fun createCoach(){
     val coachName = readNextLine("Enter a coaches name: ")
     val coachNumber = readNextInt("Enter the coaches number: ")
 
-    coachController.addCoach(Coach(0, coachName,coachNumber))
+    coachController.addCoach(Coach(0, coachName,coachNumber, false))
 }
 
  fun playerMenu(){
