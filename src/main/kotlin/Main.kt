@@ -110,18 +110,27 @@ fun createCoach(){
  }
 
 fun listAllPlayers(){
-    println(playerController.listAllPlayers())
+    println(playerController.listPlayers())
 }
 
 fun createPlayer(){
     val playerName = readNextLine("Enter a players name: ")
     val playerNumber = readNextInt("Enter the players number: ")
 
-    playerController.addPlayer(Player(0, playerName,playerNumber))
+    playerController.addPlayer(Player(0, playerName, playerNumber, false))
 }
 
-fun addPlayerToTeam(){
-    val playerId = readNextInt("Enter PlayerID: ")
-    val coachId = readNextInt("Enter CoachID: ")
-    teamController.addPlayerToCoach(playerId, coachId)
+fun addPlayerToTeam() {
+    if (playerController.numberOfPlayers() == 0) {
+        println("No players in system")
+    } else {
+        println(playerController.listPlayers())
+        val playerId = readNextInt("Choose a playerId: ")
+        println(coachController.numberOfCoaches())
+        val coachId = readNextInt("Choose a coachId: ")
+
+        val isAdded = teamController.addPlayerToCoach(playerId, coachId)
+
+
+    }
 }
