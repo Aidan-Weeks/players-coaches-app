@@ -7,9 +7,9 @@ class CoachController {
     private var lastId = 0
     private fun getId() = lastId++
 
-    fun addCoach(coach: Coach){
+    fun addCoach(coach: Coach) : Boolean{
         coach.coachId = getId()
-        coaches.add(coach)
+       return coaches.add(coach)
     }
     fun listCoaches() = coaches
     fun numberOfCoaches() = coaches.size
