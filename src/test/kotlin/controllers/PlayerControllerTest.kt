@@ -10,13 +10,15 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
+import persistence.XMLSerializer
+import java.io.File
 
 
 class PlayerControllerTest {
 
     private var playerOne: Player? = null
-    private var populatedList: PlayerController? = PlayerController()
-    private var emptyList: PlayerController? = PlayerController()
+    private var populatedList: PlayerController? = PlayerController(XMLSerializer(File("players.xml")))
+    private var emptyList: PlayerController? = PlayerController(XMLSerializer(File("empty-Players.xml")))
 
     @BeforeEach
     fun setup() {
