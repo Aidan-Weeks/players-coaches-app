@@ -3,7 +3,6 @@ package controllers
 
 import ie.setu.controllers.CoachController
 import ie.setu.models.Coach
-import ie.setu.models.Player
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach

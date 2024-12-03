@@ -1,3 +1,4 @@
+
 package ie.setu
 
 import ie.setu.controllers.CoachController
@@ -6,15 +7,18 @@ import ie.setu.controllers.TeamController
 import ie.setu.models.Team
 import ie.setu.models.Coach
 import ie.setu.models.Player
+import ie.setu.persistence.JSONSerializer
 import ie.setu.utils.readNextInt
 import ie.setu.utils.readNextLine
 import io.github.oshai.kotlinlogging.KotlinLogging
+import persistence.XMLSerializer
+import java.io.File
 
 
 val logger = KotlinLogging.logger {}
-val coachController = CoachController()
-val playerController = PlayerController()
-val teamController = TeamController()//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+private val coachController = CoachController(XMLSerializer(File("coaches.xml")))
+private val playerController = PlayerController(XMLSerializer(File("players.xml")))
+private val teamController = TeamController(XMLSerializer(File("team.xml")))//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     logger.info {"Running Player & Coaches APP"}
@@ -31,6 +35,8 @@ fun mainMenu(): Int {
           > --------------------------------- 
           > |   2. Player Options           |
           > ---------------------------------
+          > |   3. List Teams               |
+          > ---------------------------------
           > |   8. Save Changes             |
           > |   9. Load Players and Coaches |
           > ---------------------------------
@@ -46,28 +52,31 @@ fun runMenu() {
         when (val input = mainMenu()){
             1 -> coachMenu()
             2 -> playerMenu()
+            3 -> teamList()
+            8 -> save()
+            9 -> load()
             else -> println("Invalid value: $input")
         }
     }while(true)
-   }
+}
 
-    fun coachMenu(){
-        logger.info { "Launching Coach Menu" }
-        val input = readNextInt(
-            """
+fun coachMenu(){
+    logger.info { "Launching Coach Menu \n" }
+    val input = readNextInt(
+        """
                 >------------------------
                 >| 1. List Coaches      |
                 >| 2. Add Coach         |
                 >------------------------
-            """.trimMargin(">")
-        )
-        when(input) {
-            1 -> if (coachController.numberOfCoaches() == 0) {
-                println("No Coaches on System")
-            } else listAllCoaches()
-            2 -> createCoach()
-        }
+                > ===>""".trimMargin(">")
+    )
+    when(input) {
+        1 -> if (coachController.numberOfCoaches() == 0) {
+            println("No Coaches on System")
+        } else listAllCoaches()
+        2 -> createCoach()
     }
+}
 fun listAllCoaches(){
     println(coachController.listCoaches())
 }
@@ -79,7 +88,7 @@ fun createCoach(){
     coachController.addCoach(Coach(0, coachName,coachNumber, false))
 }
 
- fun playerMenu(){
+fun playerMenu(){
     if(coachController.numberOfCoaches() > 0){
         val input = readNextInt(
             """
@@ -88,7 +97,7 @@ fun createCoach(){
                 >| 2. Add Player            |
                 >| 3. Add player to Coach   |
                 >----------------------------
-                
+                >   ===>
             """.trimMargin(">")
         )
         when(input) {
@@ -107,21 +116,75 @@ fun createCoach(){
     }else {
         println("Input invalid - Add coach to the System")
     }
- }
+}
 
 fun listAllPlayers(){
-    println(playerController.listAllPlayers())
+    println(playerController.listPlayers())
 }
 
 fun createPlayer(){
     val playerName = readNextLine("Enter a players name: ")
     val playerNumber = readNextInt("Enter the players number: ")
 
-    playerController.addPlayer(Player(0, playerName,playerNumber))
+    playerController.addPlayer(Player(0, playerName, playerNumber, false))
 }
 
-fun addPlayerToTeam(){
-    val playerId = readNextInt("Enter PlayerID: ")
-    val coachId = readNextInt("Enter CoachID: ")
-    teamController.addPlayerToCoach(playerId, coachId)
+fun addPlayerToTeam() {
+    if (playerController.numberOfPlayers() == 0) {
+        println("No players in system")
+    } else if (coachController.numberOfCoaches() == 0) {
+        println("No coaches in system")
+    } else {
+        println(playerController.listPlayers())
+        val playerId = readNextInt("Choose a playerId: ")
+        println(coachController.listCoaches())
+        val coachId = readNextInt("Choose a coachId: ")
+
+        val isAdded = teamController.addPlayerToCoach(playerId, coachId)
+
+        if(isAdded){
+            println("Added Successfully")
+        }else{
+            println("Add Failed")
+        }
+    }
+}
+fun teamList() {
+    if (playerController.numberOfPlayers() == 0) {
+        println("No players in system")
+    } else if (coachController.numberOfCoaches() == 0) {
+        println("No coaches in system")
+    } else {
+        println(coachController.listCoaches())
+        val coachId = readNextInt("Enter a coach Id: \n")
+        val players = teamController.listPlayersInTeam(coachId)
+
+        if (players.isEmpty()) {
+            println("No players assigned to this coach \n")
+        } else {
+            println("$coachId's Team: ")
+            players.forEach {
+                println("Player ID: ${it.playerId}")
+            }
+        }
+    }
+}
+fun save(){
+    try {
+        coachController.store()
+        playerController.store()
+        teamController.store()
+    }catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load(){
+    try {
+        coachController.load()
+        playerController.load()
+        teamController.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
 }

@@ -1,14 +1,17 @@
 package ie.setu.controllers
 import ie.setu.models.Coach
+import ie.setu.persistence.Serializer
+import kotlin.jvm.Throws
 
-class CoachController {
-    private val coaches = mutableListOf<Coach>()
+class CoachController(serializerType: Serializer) {
+    private var serializer: Serializer = serializerType
+    private var coaches = mutableListOf<Coach>()
     private var lastId = 0
     private fun getId() = lastId++
 
     fun addCoach(coach: Coach) : Boolean{
         coach.coachId = getId()
-       return coaches.add(coach)
+        return coaches.add(coach)
     }
     fun listCoaches(): String =
         if (coaches.isEmpty()) {
@@ -25,5 +28,14 @@ class CoachController {
             .joinToString(separator = "\n") { coach ->
                 coaches.indexOf(coach).toString() + ": " + coach.toString()
             }
-}
 
+    @Throws(Exception::class)
+    fun load() {
+        coaches = serializer.read() as ArrayList<Coach>
+    }
+
+    @Throws(Exception::class)
+    fun store(){
+        serializer.write(coaches)
+    }
+}
