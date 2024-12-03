@@ -6,22 +6,18 @@ class PlayerController {
     private var lastId = 0
     private fun getId() = lastId++
 
-    fun addPlayer(player: Player) {
+    fun addPlayer(player: Player): Boolean {
         player.playerId = getId()
-        player.name = players.add(player).toString()
+        return players.add(player)
     }
 
-    fun listPlayers() = players
-
-
-    fun numberOfPlayers() = players.size
-
-    fun listAllPlayers(): String =
+    fun listPlayers(): String =
         if (players.isEmpty()) {
-            "No players stored"
-        } else {
-            formatListString(players)
+            "No players in system"
+        }else{
+            formatListString(players.filter { players ->!players.isPlayerArchived })
         }
+    fun numberOfPlayers() = players.size
 
 
     private fun formatListString(playersToFormat: List<Player>): String =
