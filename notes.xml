@@ -1,0 +1,22 @@
+<object-stream>
+  <list>
+    <ie.setu.models.Coach>
+      <coachId>0</coachId>
+      <name>John Doe</name>
+      <phone>831234567</phone>
+      <isCoachArchived>false</isCoachArchived>
+    </ie.setu.models.Coach>
+    <ie.setu.models.Coach>
+      <coachId>1</coachId>
+      <name>Barry King</name>
+      <phone>832345678</phone>
+      <isCoachArchived>false</isCoachArchived>
+    </ie.setu.models.Coach>
+    <ie.setu.models.Coach>
+      <coachId>2</coachId>
+      <name>Joe McGrath</name>
+      <phone>833456789</phone>
+      <isCoachArchived>false</isCoachArchived>
+    </ie.setu.models.Coach>
+  </list>
+</object-stream>
