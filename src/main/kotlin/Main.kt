@@ -1,3 +1,4 @@
+@file:Suppress("UNUSED_EXPRESSION")
 
 package ie.setu
 
@@ -70,18 +71,24 @@ fun coachMenu(){
     val input = readNextInt(
         """
                 >------------------------
-                >| 1. List Coaches      |
-                >| 2. Add Coach         |
+                >| 1. Add Coach         |
+                >| 2. List Coaches      |
                 >| 3. Update Coach      |
                 >| 4. Remove Coach      |
                 >------------------------
                 > ===>""".trimMargin(">")
     )
     when(input) {
-        1 -> if (coachController.numberOfCoaches() == 0) {
-            println("No Coaches on System")
-        } else listAllCoaches()
-        2 -> createCoach()
+        1 -> createCoach()
+        2 -> if (coachVerify()){
+            listAllCoaches()
+        }else println("No players in system")
+        3 -> if (coachVerify()){
+            updateCoach()
+        }else println("No players in system")
+        4 -> if(coachVerify()){
+            removeCoach()
+        }else println("No coaches in System")
     }
 }
 fun listAllCoaches(){
@@ -93,6 +100,33 @@ fun createCoach(){
     val coachNumber = readNextInt("Enter the coaches number: ")
 
     coachController.addCoach(Coach(0, coachName,coachNumber, false))
+}
+
+fun updateCoach(){
+    listAllCoaches()
+    if (coachVerify()){
+        val coachToUpdate = readNextInt("Enter the coach ID: \n")
+        if (coachController.isValidCoach(coachToUpdate)) {
+            val name = readNextLine("Enter the coaches name: ")
+            val phone = readNextInt("Enter ${name}'s phone number: ")
+
+            if(coachController.updateCoach(coachToUpdate, Coach(coachToUpdate, name, phone, false))) {
+                println("Update Successful")
+            } else {
+                println("Update Failed")
+            }
+        }else {
+            println("There are no coaches with coach ID: ${coachToUpdate}")
+        }
+    }
+}
+
+fun removeCoach(){
+
+}
+
+fun coachVerify(): Boolean{
+    return playerController.numberOfPlayers() == 0
 }
 
 fun playerMenu() {
@@ -134,6 +168,22 @@ fun createPlayer(){
 }
 
 fun updatePlayer(){
+        listAllPlayers()
+        if (playerVerify()){
+            val playerToUpdate = readNextInt("Enter the player ID: \n")
+            if (playerController.isValidPlayer(playerToUpdate)) {
+                val name = readNextLine("Enter the players name: ")
+                val phone = readNextInt("Enter ${name}'s phone number: ")
+
+                if(playerController.updatePlayer(playerToUpdate, Player(playerToUpdate, name, phone, false))) {
+                    println("Update Successful")
+                } else {
+                    println("Update Failed")
+                }
+            }else {
+                println("There are no coaches with coach ID: ${playerToUpdate}")
+            }
+        }
 
 }
 
@@ -149,7 +199,7 @@ fun teamMenu(){
 
 }
 
-fun addPlayerToTeam() {
+/*fun addPlayerToTeam() {
     if (playerController.numberOfPlayers() == 0) {
         println("No players in system")
     } else if (coachController.numberOfCoaches() == 0) {
@@ -168,8 +218,9 @@ fun addPlayerToTeam() {
             println("Add Failed")
         }
     }
-}
-fun teamList() {
+}*/
+
+/*fun teamList() {
     if (playerController.numberOfPlayers() == 0) {
         println("No players in system")
     } else if (coachController.numberOfCoaches() == 0) {
@@ -188,7 +239,8 @@ fun teamList() {
             }
         }
     }
-}
+}*/
+
 fun save(){
     try {
         coachController.store()

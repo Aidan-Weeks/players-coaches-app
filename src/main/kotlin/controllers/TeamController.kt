@@ -6,20 +6,25 @@ import kotlin.jvm.Throws
 
 class TeamController(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
-    private var team = mutableListOf<Team>()
+    private var teams = mutableListOf<Team>()
+    private var lastId = 0
+    private fun getId() = lastId++
 
-    fun addPlayerToTeam(playerId: Int, coachId: Int) :Boolean {
-        return team.add(Team(playerId, coachId))
+    fun addTeam(team: Team) :Boolean {
+        team.teamId = getId()
+        return teams.add(team)
     }
-    fun listPlayersInTeam(coachId: Int) = team.filter { it.coachId == coachId }
+
+
+    fun listPlayersInTeam(coachId: Int) = teams.filter { it.coachId == coachId }
 
     @Throws(Exception::class)
     fun load() {
-        team = serializer.read() as ArrayList<Team>
+        teams = serializer.read() as ArrayList<Team>
     }
 
     @Throws(Exception::class)
     fun store(){
-        serializer.write(team)
+        serializer.write(teams)
     }
 }
