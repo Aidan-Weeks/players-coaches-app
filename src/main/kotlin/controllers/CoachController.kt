@@ -52,6 +52,14 @@ class CoachController(serializerType: Serializer) {
         return isValidListIndex(index, coaches)
     }
 
+    fun deleteCoach(indexToDelete: Int): Coach?{
+        return if (isValidListIndex(indexToDelete, coaches)) {
+            coaches.removeAt(indexToDelete)
+        }else{
+            null
+        }
+    }
+
     private fun formatListString(coachesToFormat: List<Coach>): String =
         coachesToFormat
             .joinToString(separator = "\n") { coach ->

@@ -44,8 +44,17 @@ class PlayerController(serializerType: Serializer) {
         return true
     }
 
+
     fun isValidPlayer(index: Int): Boolean {
         return isValidListIndex(index, players)
+    }
+
+    fun deletePlayer(indexToDelete: Int): Player?{
+        return if (isValidListIndex(indexToDelete, players)) {
+            players.removeAt(indexToDelete)
+        }else{
+            null
+        }
     }
 
     private fun formatListString(playersToFormat: List<Player>): String =

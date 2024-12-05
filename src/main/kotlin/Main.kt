@@ -82,7 +82,7 @@ fun coachMenu(){
         1 -> createCoach()
         2 -> if (coachVerify()){
             listAllCoaches()
-        }else println("No players in system")
+        }else println("No Coaches in system")
         3 -> if (coachVerify()){
             updateCoach()
         }else println("No players in system")
@@ -104,7 +104,7 @@ fun createCoach(){
 
 fun updateCoach(){
     listAllCoaches()
-    if (coachVerify()){
+    if (!coachVerify()){
         val coachToUpdate = readNextInt("Enter the coach ID: \n")
         if (coachController.isValidCoach(coachToUpdate)) {
             val name = readNextLine("Enter the coaches name: ")
@@ -121,9 +121,21 @@ fun updateCoach(){
     }
 }
 
-fun removeCoach(){
-
+fun removeCoach() {
+    listAllCoaches()
+    if (!coachVerify()){
+        val indexToDelete = readNextInt("Enter the Coach ID to Remove: \n")
+        val coachToDelete = coachController.deleteCoach(indexToDelete)
+        if (coachToDelete != null) {
+            println("Delete successful! Removed Coach: ${coachToDelete.name}")
+        } else {
+            println("Delete NOT successful")
+        }
+    } else {
+        println("-----------------")
+    }
 }
+
 
 fun coachVerify(): Boolean{
     return playerController.numberOfPlayers() == 0
@@ -169,7 +181,7 @@ fun createPlayer(){
 
 fun updatePlayer(){
         listAllPlayers()
-        if (playerVerify()){
+        if (!playerVerify()){
             val playerToUpdate = readNextInt("Enter the player ID: \n")
             if (playerController.isValidPlayer(playerToUpdate)) {
                 val name = readNextLine("Enter the players name: ")
@@ -188,7 +200,16 @@ fun updatePlayer(){
 }
 
 fun removePlayer(){
-
+    listAllPlayers()
+    if(!playerVerify()){
+        val indexToDelete = readNextInt("Enter the Player ID to Remove: \n")
+        val playerToDelete = playerController.deletePlayer(indexToDelete)
+        if(playerToDelete != null) {
+            println("Delete successful! Removed Player: ${playerToDelete.name}")
+        } else {
+            println("Delete NOT successful")
+        }
+    }
 }
 
 fun playerVerify(): Boolean{
