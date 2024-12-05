@@ -1,6 +1,8 @@
 package ie.setu.models
 
 data class Team(
-    val playerId: Int,
+    var teamId: Int = 0,
+    var teamName: String = "",
+    var player: MutableList<Player>,
     val coachId: Int
 )

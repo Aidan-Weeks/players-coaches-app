@@ -17,10 +17,17 @@ class CoachController(serializerType: Serializer) {
         if (coaches.isEmpty()) {
             "No coaches in system"
         }else{
-            formatListString(coaches.filter { coaches ->!coaches.isCoachArchived })
+            formatListString(coaches.filter { coach ->!coach.isCoachArchived })
         }
 
     fun numberOfCoaches() = coaches.size
+
+    fun findCoachName(searchName: String) =
+        formatListString(
+            coaches.filter { coach -> coach.name.contains(searchName, ignoreCase = true) }
+        )
+
+    fun listPlayersInTeam(coachId: Int) = coaches.filter { it.coachId == coachId }
 
 
     private fun formatListString(coachesToFormat: List<Coach>): String =

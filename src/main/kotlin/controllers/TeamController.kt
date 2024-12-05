@@ -8,7 +8,7 @@ class TeamController(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var team = mutableListOf<Team>()
 
-    fun addPlayerToCoach(playerId: Int, coachId: Int) :Boolean {
+    fun addPlayerToTeam(playerId: Int, coachId: Int) :Boolean {
         return team.add(Team(playerId, coachId))
     }
     fun listPlayersInTeam(coachId: Int) = team.filter { it.coachId == coachId }

@@ -24,7 +24,6 @@ class PlayerController(serializerType: Serializer) {
         }
     fun numberOfPlayers() = players.size
 
-
     private fun formatListString(playersToFormat: List<Player>): String =
         playersToFormat
             .joinToString(separator = "\n") { player ->
