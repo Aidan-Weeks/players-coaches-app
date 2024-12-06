@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package ie.setu
 
 import ie.setu.controllers.CoachController
@@ -77,6 +75,7 @@ fun coachMenu(){
                 >| 2. List Coaches      |
                 >| 3. Update Coach      |
                 >| 4. Remove Coach      |
+                >| 5. Back              |
                 >------------------------
                 > ===>""".trimMargin(">")
 
@@ -92,6 +91,7 @@ fun coachMenu(){
         4 -> if(coachVerify()){
             removeCoach()
         }else println("No coaches in System")
+        5 -> back()
     }
 }
 fun listAllCoaches(){
@@ -107,7 +107,7 @@ fun createCoach(){
 
 fun updateCoach(){
     listAllCoaches()
-    if (!coachVerify()){
+    if (coachVerify()){
         val coachToUpdate = readNextInt("Enter the coach ID: \n")
         if (coachController.isValidCoach(coachToUpdate)) {
             val name = readNextLine("Enter the coaches name: ")
@@ -126,7 +126,7 @@ fun updateCoach(){
 
 fun removeCoach() {
     listAllCoaches()
-    if (!coachVerify()){
+    if (coachVerify()){
         val indexToDelete = readNextInt("Enter the Coach ID to Remove: \n")
         val coachToDelete = coachController.deleteCoach(indexToDelete)
         if (coachToDelete != null) {
@@ -153,6 +153,7 @@ fun playerMenu() {
                 >| 2. List Players          |
                 >| 3. Update Player info    |
                 >| 4. Remove Player         |
+                >| 5. Back                  |
                 >----------------------------
                 >   ===>
             """.trimMargin(">")
@@ -168,6 +169,7 @@ fun playerMenu() {
         4 -> if (playerVerify()){
             removePlayer()
         }else println("No players in system")
+        5 -> back()
     }
 }
 
@@ -184,7 +186,7 @@ fun createPlayer(){
 
 fun updatePlayer(){
         listAllPlayers()
-        if (!playerVerify()){
+        if (playerVerify()){
             val playerToUpdate = readNextInt("Enter the player ID: \n")
             if (playerController.isValidPlayer(playerToUpdate)) {
                 val name = readNextLine("Enter the players name: ")
@@ -204,7 +206,7 @@ fun updatePlayer(){
 
 fun removePlayer(){
     listAllPlayers()
-    if(!playerVerify()){
+    if(playerVerify()){
         val indexToDelete = readNextInt("Enter the Player ID to Remove: \n")
         val playerToDelete = playerController.deletePlayer(indexToDelete)
         if(playerToDelete != null) {
@@ -221,6 +223,10 @@ fun playerVerify(): Boolean{
 
 fun teamMenu(){
 
+}
+
+fun back(){
+    println("-----------------")
 }
 
 /*fun addPlayerToTeam() {
