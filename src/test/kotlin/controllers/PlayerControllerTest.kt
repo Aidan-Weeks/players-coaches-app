@@ -12,13 +12,26 @@ import persistence.XMLSerializer
 import java.io.File
 
 
+
+import ie.setu.controllers.PlayerController
+import ie.setu.models.Player
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Nested
+
+
 class PlayerControllerTest {
 
     private var playerOne: Player? = null
+
     private var playerTwo: Player? = null
     private var playerThree: Player? = null
     private var populatedList: PlayerController? = PlayerController(XMLSerializer(File("players.xml")))
     private var emptyList: PlayerController? = PlayerController(XMLSerializer(File("empty-Players.xml")))
+
 
     @BeforeEach
     fun setup() {

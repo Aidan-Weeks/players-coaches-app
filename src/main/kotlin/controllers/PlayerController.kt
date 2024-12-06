@@ -45,6 +45,7 @@ class PlayerController(serializerType: Serializer) {
     }
 
 
+
     fun isValidPlayer(index: Int): Boolean {
         return isValidListIndex(index, players)
     }

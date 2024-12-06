@@ -58,9 +58,11 @@ fun runMenu() {
         when (val input = mainMenu()){
             1 -> coachMenu()
             2 -> playerMenu()
+
             3 -> teamMenu()
             8 -> save()
             9 -> load()
+
             else -> println("Invalid value: $input")
         }
     }while(true)
@@ -77,6 +79,7 @@ fun coachMenu(){
                 >| 4. Remove Coach      |
                 >------------------------
                 > ===>""".trimMargin(">")
+
     )
     when(input) {
         1 -> createCoach()
@@ -221,6 +224,7 @@ fun teamMenu(){
 }
 
 /*fun addPlayerToTeam() {
+
     if (playerController.numberOfPlayers() == 0) {
         println("No players in system")
     } else if (coachController.numberOfCoaches() == 0) {
