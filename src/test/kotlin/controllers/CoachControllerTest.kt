@@ -3,11 +3,12 @@ package controllers
 
 import ie.setu.controllers.CoachController
 import ie.setu.models.Coach
+import ie.setu.updateCoach
+import ie.setu.utils.isValidListIndex
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
 import persistence.XMLSerializer
 import java.io.File
@@ -53,7 +54,7 @@ class CoachControllerTest {
         fun `ListCoaches returns coaches in ArrayList`() {
             assertEquals(0, emptyList!!.numberOfCoaches())
             assertTrue(emptyList!!.listCoaches().lowercase().contains("no coaches"))
-            assertEquals(1, populatedList!!.numberOfCoaches())
+            assertEquals(3, populatedList!!.numberOfCoaches())
             assertTrue(populatedList!!.numberOfCoaches() > 0)
         }
     }
@@ -81,13 +82,49 @@ class CoachControllerTest {
             storingCoaches.addCoach(coachThree!!)
             storingCoaches.store()
 
-            val loadedNotes = CoachController(XMLSerializer(File("coach.xml")))
-            loadedNotes.load()
+            val loadedPlayers = CoachController(XMLSerializer(File("coach.xml")))
+            loadedPlayers.load()
 
             assertEquals(3, storingCoaches.numberOfCoaches())
-            assertEquals(3, loadedNotes.numberOfCoaches())
-            assertEquals(storingCoaches.numberOfCoaches(), loadedNotes.numberOfCoaches())
+            assertEquals(3, loadedPlayers.numberOfCoaches())
+            assertEquals(storingCoaches.numberOfCoaches(), loadedPlayers.numberOfCoaches())
         }
     }
 
+    @Nested
+    inner class updateCoaches {
+        @Test
+        fun `updating a Coach that doesn't exist returns false`() {
+            assertTrue(populatedList!!.updateCoach(123,null))
+        }
+        @Test
+        fun `update Coach that exists returns true and updates`(){
+            val originalCoach = populatedList!!.findCoach(1)
+            assertNotNull(originalCoach)
+            if (originalCoach != null) {
+                assertEquals("Barry King", originalCoach.name)
+            }
+
+            val updatedCoach = Coach(124, "Jim", 890123456, false)
+            val updatedResult = populatedList!!.updateCoach(1, updatedCoach)
+            assertEquals(true, updatedResult)
+        }
+    }
+
+    @Nested
+    inner class deleteCoach {
+        @Test
+        fun `deleting a Coach that doesn't exist, returns null`() {
+            assertNull(emptyList!!.deleteCoach(0))
+            assertNull(populatedList!!.deleteCoach(8))
+        }
+
+    @Test
+    fun `remove an existing coach and return that coach was deleted`(){
+        assertEquals(3, populatedList!!.numberOfCoaches())
+        assertEquals(coachOne, populatedList!!.deleteCoach(0))
+        assertEquals(2, populatedList!!.numberOfCoaches())
+    }
+    }
 }
+
