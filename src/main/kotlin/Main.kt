@@ -148,13 +148,13 @@ fun playerMenu() {
 
     val input = readNextInt(
         """
-                >----------------------------
-                >| 1. Add Player            |
-                >| 2. List Players          |
-                >| 3. Update Player info    |
-                >| 4. Remove Player         |
-                >| 5. Back                  |
-                >----------------------------
+             >----------------------------
+             >| 1. Add Player            |
+             >| 2. List Players          |
+             >| 3. Update Player info    |
+             >| 4. Remove Player         |
+             >| 5. Back                  |
+             >----------------------------
                 >   ===>
             """.trimMargin(">")
     )
@@ -222,8 +222,53 @@ fun playerVerify(): Boolean{
 }
 
 fun teamMenu(){
-
+    val input = readNextInt(
+        """
+                >----------------------------
+                >| 1. Add Team              |
+                >| 2. List Teams            |
+                >| 3. List team Details     |
+                >| 4. Update Team           |
+                >| 5. Delete Team           |
+                >| 6. Back                  |
+                >----------------------------
+                >   ===>
+        """.trimMargin(">")
+    )
+    when(input){
+        1-> addTeam()
+        2-> if(teamVerify()){
+            listAllTeams()
+        }else println("No teams in system")
+    }
 }
+
+fun addTeam(){
+    val teamName = readNextLine("Enter Team Name: \n")
+    listAllCoaches()
+    val teamCoachId = readNextInt("Enter the Team's coach ID: ")
+    val teamCoach = coachController.findCoach(teamCoachId)
+    if (teamCoach != null) {
+       val isAdded = teamController.addTeam(Team(0, teamName, mutableListOf(), teamCoach, false))
+
+        if (isAdded){
+            println("Added team Successfully")
+        }else{
+            println("Failed to Add team")
+        }
+    }else{
+        println("-----------------")
+    }
+}
+
+fun listAllTeams(){
+    println(teamController.listTeams())
+}
+
+fun teamVerify(): Boolean{
+    return teamController.numberOfTeams() > 0
+}
+
 
 fun back(){
     println("-----------------")

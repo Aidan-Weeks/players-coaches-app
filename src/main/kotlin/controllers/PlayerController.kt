@@ -63,6 +63,7 @@ class PlayerController(serializerType: Serializer) {
             .joinToString(separator = "\n") { player ->
                 players.indexOf(player).toString() + ": " + player.toString()
             }
+
     @Throws(Exception::class)
     fun load() {
         players = serializer.read() as ArrayList<Player>

@@ -15,8 +15,21 @@ class TeamController(serializerType: Serializer) {
         return teams.add(team)
     }
 
+    fun numberOfTeams() = teams.size
 
-    fun listPlayersInTeam(coachId: Int) = teams.filter { it.coachId == coachId }
+   fun listTeams(): String =
+       if (teams.isEmpty()) {
+           "No Teams in system"
+       }else{
+           formatListString(teams.filter { teams ->!teams.isTeamArchived })
+       }
+
+
+    private fun formatListString(playersToFormat: List<Team>): String =
+        playersToFormat
+            .joinToString(separator = "\n") { team ->
+                teams.indexOf(team).toString() + ": " + team.toString()
+            }
 
     @Throws(Exception::class)
     fun load() {
