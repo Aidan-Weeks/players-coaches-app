@@ -218,11 +218,12 @@ fun teamMenu(){
                 >----------------------------
                 >| 1. Add Team              |
                 >| 2. Add Player to Team    |
-                >| 3. List all Teams        |
-                >| 4. List team Details     |
-                >| 5. Update Team           |
-                >| 6. Delete Team           |
-                >| 7. Back                  |
+                >| 3. Remove player         |
+                >| 4. List all Teams        |
+                >| 5. List team Details     |
+                >| 6. Update Team           |
+                >| 7. Delete Team           |
+                >| 8. Back                  |
                 >----------------------------
                 >   ===>
         """.trimMargin(">")
@@ -232,18 +233,22 @@ fun teamMenu(){
         2-> if (teamVerify()){
             addPlayerToTeam()
         }else println("No teams in system")
-        3-> if(teamVerify()){
+        3-> if (teamVerify()){
+            removePlayerFromTeam()
+        }else println("No teams in system")
+        4-> if(teamVerify()){
             listAllTeams()
         }else println("No teams in system")
-        4 -> if(teamVerify()){
+        5 -> if(teamVerify()){
             teamDetails()
         }else println("No teams in system")
-        5 -> if(teamVerify()){
+        6 -> if(teamVerify()){
             updateTeam()
         }else println("No teams in system")
-        6-> if(teamVerify()){
+        7-> if(teamVerify()){
             removeTeam()
         }else println("No teams in system")
+        8-> back()
     }
 }
 
@@ -285,9 +290,29 @@ fun addPlayerToTeam() {
                 println("Failed to add player to Team")
             }
         } else {
-            println("There are no teams with team ID: ${teamId}")
+            println("There are no teams with team ID: $teamId")
         }
     }
+}
+
+fun removePlayerFromTeam() {
+    listAllTeams()
+    val teamId = readNextInt("Enter the TeamID to remove a player from: ")
+    val team = teamController.findTeam(teamId)
+    if (team != null) {
+        if (team.player.isEmpty()) {
+            println("No players on this team")
+        }else {
+            println("Players in ${team.teamName}:")
+            team.player.forEach { println("ID: ${it.playerId} name: ${it.name}") }
+            val playerId = readNextInt("Enter Player ID to remove: ")
+            if (teamController.removePlayerFromTeam(playerId, teamId)) {
+                println("Player removed successfully")
+            } else {
+                println("Failed to remove player from Team")
+            }
+        }
+        }
 }
 
 fun teamDetails() {

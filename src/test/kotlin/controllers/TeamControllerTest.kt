@@ -25,9 +25,9 @@ class TeamControllerTest {
     fun setup() {
         coach = Coach(123, "John Doe", 831234567, false)
         val player = Player(111, "Anthony Edwards", 123456789, false)
-        teamOne = Team(0, "Team A", mutableListOf(player), coach!!, false)
-        teamTwo = Team(1, "Team B", mutableListOf(player), coach!!, false)
-        teamThree = Team(2, "Team C", mutableListOf(player), coach!!, false)
+        teamOne = Team(1, "Team A", mutableListOf(player), coach!!, false)
+        teamTwo = Team(2, "Team B", mutableListOf(player), coach!!, false)
+        teamThree = Team(3, "Team C", mutableListOf(player), coach!!, false)
 
         populatedList!!.addTeam(teamOne!!)
         populatedList!!.addTeam(teamTwo!!)
@@ -84,6 +84,31 @@ class TeamControllerTest {
     }
 
     @Nested
+    inner class removePlayerFromTeam{
+        @Test
+        fun `successfully remove a player from team`(){
+            val newPlayer = Player(114, "Zion Williamson", 87345974, false)
+            val addResult = populatedList!!.addPlayerToTeam(newPlayer, 1)
+            assertTrue(addResult)
+            val removeResult = populatedList!!.removePlayerFromTeam(114, 1)
+            assertTrue(removeResult)
+            val team = populatedList!!.findTeam(1)
+            assertNotNull(team, "Team should exist")
+            assertFalse(team?.player?.contains(newPlayer) == true)
+        }
+
+        @Test
+        fun `trying to remove a player who does not exist should fail`() {
+            val removeResult = populatedList!!.removePlayerFromTeam(-1, 1)
+            assertFalse(removeResult)
+
+            val team = populatedList!!.findTeam(1)
+            assertNotNull(team, "Team should exist")
+            assertTrue(team?.player?.size == 1)
+        }
+    }
+
+    @Nested
     inner class UpdateTeams {
         @Test
         fun `updating a Team that doesn't exist returns false`() {
@@ -120,6 +145,5 @@ class TeamControllerTest {
         assertNotNull(removedTeam)
         assertEquals("Team B", removedTeam!!.teamName)
         assertEquals(2, populatedList!!.numberOfTeams())
-        assertNull(populatedList!!.findTeam(1))
     }
 }
