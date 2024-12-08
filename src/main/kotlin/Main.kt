@@ -88,7 +88,7 @@ fun coachMenu(){
         }else println("No Coaches in system")
         3 -> if (coachVerify()){
             updateCoach()
-        }else println("No players in system")
+        }else println("No coaches in system")
         4 -> if(coachVerify()){
             removeCoach()
         }else println("No coaches in System")
@@ -108,7 +108,6 @@ fun createCoach(){
 
 fun updateCoach(){
     listAllCoaches()
-    if (coachVerify()){
         val coachToUpdate = readNextInt("Enter the coach ID: \n")
         if (coachController.isValidCoach(coachToUpdate)) {
             val name = readNextLine("Enter the coaches name: ")
@@ -122,24 +121,18 @@ fun updateCoach(){
         }else {
             println("There are no coaches with coach ID: ${coachToUpdate}")
         }
-    }
 }
 
 fun removeCoach() {
     listAllCoaches()
-    if (coachVerify()){
         val indexToDelete = readNextInt("Enter the Coach ID to Remove: \n")
         val coachToDelete = coachController.deleteCoach(indexToDelete)
         if (coachToDelete != null) {
             println("Delete successful! Removed Coach: ${coachToDelete.name}")
         } else {
-            println("Delete NOT successful")
+            println("Delete Failed")
         }
-    } else {
-        println("-----------------")
-    }
 }
-
 
 fun coachVerify(): Boolean{
     return coachController.numberOfCoaches() > 0
@@ -187,7 +180,6 @@ fun createPlayer(){
 
 fun updatePlayer(){
         listAllPlayers()
-        if (playerVerify()){
             val playerToUpdate = readNextInt("Enter the player ID: \n")
             if (playerController.isValidPlayer(playerToUpdate)) {
                 val name = readNextLine("Enter the players name: ")
@@ -203,11 +195,8 @@ fun updatePlayer(){
             }
         }
 
-}
-
 fun removePlayer(){
     listAllPlayers()
-    if(playerVerify()){
         val indexToDelete = readNextInt("Enter the Player ID to Remove: \n")
         val playerToDelete = playerController.deletePlayer(indexToDelete)
         if(playerToDelete != null) {
@@ -216,7 +205,6 @@ fun removePlayer(){
             println("Delete NOT successful")
         }
     }
-}
 
 fun playerVerify(): Boolean{
    return playerController.numberOfPlayers() > 0
@@ -248,6 +236,12 @@ fun teamMenu(){
         4 -> if(teamVerify()){
             teamDetails()
         }else println("No teams in system")
+        5 -> if(teamVerify()){
+            updateTeam()
+        }else println("No teams in system")
+        6-> if(teamVerify()){
+            removeTeam()
+        }else println("No teams in system")
     }
 }
 
@@ -272,19 +266,6 @@ fun addTeam(){
 
 fun listAllTeams(){
     println(teamController.listTeams())
-}
-
-fun updateTeam(){
-
-}
-
-fun teamVerify(): Boolean{
-    return teamController.numberOfTeams() > 0
-}
-
-
-fun back(){
-    println("-----------------")
 }
 
 fun addPlayerToTeam() {
@@ -325,6 +306,44 @@ fun teamDetails() {
         }
     }
 
+fun updateTeam(){
+    listAllTeams()
+    val teamToUpdate = readNextInt("Enter a team ID: \n")
+    val team = teamController.findTeam(teamToUpdate)
+    if (team == null) {
+        println("Invalid team \n --------------")
+    } else {
+        val teamName = readNextLine("Enter New team name: \n")
+        println(coachController.listCoaches())
+        val coachId = readNextInt("Enter New Coach ID: \n")
+        val coach = coachController.findCoach(coachId)
+            if (coach != null){
+                teamController.updateTeam(teamToUpdate,teamName, coach)
+                println("Successfully updated team: ${teamName}")
+            }else println("Incorrect coach ID entered")
+    }
+}
+
+fun removeTeam(){
+    listAllTeams()
+    val indexToDelete = readNextInt("Enter the ID of the team to remove: \n")
+    val teamToDelete = teamController.deleteTeam(indexToDelete)
+    if (teamToDelete != null) {
+        println("Delete successful! Removed Team: ${teamToDelete.teamName}")
+    }else{
+        println("Delete Failed")
+    }
+
+}
+
+fun teamVerify(): Boolean{
+    return teamController.numberOfTeams() > 0
+}
+
+
+fun back(){
+    println("-----------------")
+}
 
 fun save(){
     try {

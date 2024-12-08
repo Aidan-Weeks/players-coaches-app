@@ -1,4 +1,5 @@
 package ie.setu.controllers
+import ie.setu.models.Coach
 import ie.setu.models.Player
 import ie.setu.models.Team
 import ie.setu.persistence.Serializer
@@ -40,6 +41,24 @@ class TeamController(serializerType: Serializer) {
             true
         } else {
             false
+        }
+    }
+
+    fun updateTeam(teamToUpdate: Int, teamName: String, coach: Coach): Boolean {
+        val foundTeam = findTeam(teamToUpdate)
+
+        if (foundTeam != null){
+            foundTeam.teamName = teamName
+            foundTeam.coach = coach
+        }
+        return true
+    }
+
+    fun deleteTeam(indexToDelete: Int): Team? {
+        return if (isValidListIndex(indexToDelete, teams)){
+            teams.removeAt(indexToDelete)
+        }else{
+            null
         }
     }
 
