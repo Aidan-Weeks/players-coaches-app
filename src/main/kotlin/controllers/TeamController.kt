@@ -44,6 +44,7 @@ class TeamController(serializerType: Serializer) {
         }
     }
 
+
     fun updateTeam(teamToUpdate: Int, teamName: String, coach: Coach): Boolean {
         val foundTeam = findTeam(teamToUpdate)
 
