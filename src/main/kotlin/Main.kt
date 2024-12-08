@@ -12,6 +12,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import persistence.JSONSerializer
 import persistence.XMLSerializer
 import java.io.File
+import kotlin.system.exitProcess
 
 
 val logger = KotlinLogging.logger {}
@@ -61,6 +62,7 @@ fun runMenu() {
             }else println("No coaches in system")
             8 -> save()
             9 -> load()
+            0 -> exit()
 
             else -> println("Invalid value: $input")
         }
@@ -363,4 +365,9 @@ fun load(){
     } catch (e: Exception) {
         System.err.println("Error reading from file: $e")
     }
+}
+
+fun exit(){
+   println("Exiting app - Goodbye!")
+   exitProcess(0)
 }
