@@ -248,9 +248,6 @@ fun teamMenu(){
         4 -> if(teamVerify()){
             teamDetails()
         }else println("No teams in system")
-        5 -> if(teamVerify()) {
-            updateTeam()
-        }else println("No teams in system")
     }
 }
 
