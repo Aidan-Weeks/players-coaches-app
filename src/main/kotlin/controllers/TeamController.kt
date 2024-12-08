@@ -2,6 +2,7 @@ package ie.setu.controllers
 import ie.setu.models.Player
 import ie.setu.models.Team
 import ie.setu.persistence.Serializer
+import ie.setu.utils.isValidListIndex
 import kotlin.jvm.Throws
 
 class TeamController(serializerType: Serializer) {
@@ -24,6 +25,27 @@ class TeamController(serializerType: Serializer) {
            formatListString(teams.filter { teams ->!teams.isTeamArchived })
        }
 
+    fun findTeam(index: Int): Team? {
+        return if (isValidListIndex(index, teams)){
+            teams[index]
+        }else{
+            null
+        }
+    }
+
+    fun addPlayerToTeam(player: Player, teamId: Int): Boolean {
+        val team = findTeam(teamId)
+        return if (team != null) {
+            team.player.add(player)
+            true
+        } else {
+            false
+        }
+    }
+
+    fun isValidTeam(index: Int): Boolean {
+        return isValidListIndex(index, teams)
+    }
 
     private fun formatListString(playersToFormat: List<Team>): String =
         playersToFormat
