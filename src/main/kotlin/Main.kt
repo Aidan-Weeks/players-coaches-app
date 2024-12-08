@@ -245,7 +245,10 @@ fun teamMenu(){
         3-> if(teamVerify()){
             listAllTeams()
         }else println("No teams in system")
-        4 -> if(teamVerify()) {
+        4 -> if(teamVerify()){
+            teamDetails()
+        }else println("No teams in system")
+        5 -> if(teamVerify()) {
             updateTeam()
         }else println("No teams in system")
     }
@@ -307,27 +310,24 @@ fun addPlayerToTeam() {
     }
 }
 
+fun teamDetails() {
+        println(teamController.listTeams())
+        val teamId = readNextInt("Enter a team ID: \n")
+        val team = teamController.findTeam(teamId)
 
-/*fun teamList() {
-    if (playerController.numberOfPlayers() == 0) {
-        println("No players in system")
-    } else if (coachController.numberOfCoaches() == 0) {
-        println("No coaches in system")
-    } else {
-        println(coachController.listCoaches())
-        val coachName = readNextLine("Enter a coach Name: \n")
-        val players = coachController.findCoachName(coachName)
-
-        if (players.isEmpty()) {
-            println("No players assigned to this coach \n")
+        if (team == null) {
+            println("Invalid team \n --------------")
         } else {
-            println("$coachName's Team: ")
-            players.forEach {
-                println("Player name: ${it.name}")
+            println("${team.teamName} ")
+            if (team.player.isEmpty()){
+                println("No players on ${team.teamName}")
+            }else{
+                println("Players ")
+                team.player.forEach { player -> println(player.name)}
             }
         }
     }
-}*/
+
 
 fun save(){
     try {
