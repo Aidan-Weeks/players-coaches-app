@@ -295,27 +295,24 @@ fun addPlayerToTeam() {
     }
 }
 
-fun removePlayerFromTeam(){
+fun removePlayerFromTeam() {
     listAllTeams()
     val teamId = readNextInt("Enter the TeamID to remove a player from: ")
     val team = teamController.findTeam(teamId)
     if (team != null) {
-        if(team.player.isEmpty()){
+        if (team.player.isEmpty()) {
             println("No players on this team")
+        }else {
+            println("Players in ${team.teamName}:")
+            team.player.forEach { println("ID: ${it.playerId} name: ${it.name}") }
+            val playerId = readNextInt("Enter Player ID to remove: ")
+            if (teamController.removePlayerFromTeam(playerId, teamId)) {
+                println("Player removed successfully")
+            } else {
+                println("Failed to remove player from Team")
+            }
         }
-        println("Players in ${team.teamName}:")
-        team.player.forEach { println("ID: ${it.playerId} name: ${it.name}") }
-        val playerId = readNextInt("Enter Player ID to remove: ")
-        val removePlayer = team.player.find { it.playerId == playerId }
-        if (removePlayer !=null) {
-         team.player.remove(removePlayer)
-         println("player ${removePlayer.name} removed successfully")
-        }else{
-            println("Player ID: '${playerId}' not found on team")
         }
-    }else{
-        println("Incorrect team ID")
-    }
 }
 
 fun teamDetails() {

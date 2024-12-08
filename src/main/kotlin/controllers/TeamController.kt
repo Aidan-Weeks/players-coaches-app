@@ -44,6 +44,18 @@ class TeamController(serializerType: Serializer) {
         }
     }
 
+    fun removePlayerFromTeam(playerId: Int, teamId: Int): Boolean {
+        val team = findTeam(teamId)
+        if(team != null) {
+            val player = team.player.find {it.playerId == playerId}
+            if(player != null) {
+                team.player.remove(player)
+                return true
+            }
+        }
+        return false
+    }
+
 
     fun updateTeam(teamToUpdate: Int, teamName: String, coach: Coach): Boolean {
         val foundTeam = findTeam(teamToUpdate)
