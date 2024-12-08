@@ -22,11 +22,6 @@ class CoachController(serializerType: Serializer) {
         }
     fun numberOfCoaches() = coaches.size
 
-    fun findCoachName(searchString: String) =
-        formatListString(
-            coaches.filter { coach -> coach.name.contains(searchString, ignoreCase = true) }
-        )
-
     fun findCoach(index: Int): Coach? {
         return if (isValidListIndex(index, coaches)) {
             coaches[index]
