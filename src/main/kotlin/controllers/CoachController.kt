@@ -46,8 +46,6 @@ class CoachController(serializerType: Serializer) {
         return true
     }
 
-    fun listPlayersInTeam(coachId: Int) = coaches.filter { it.coachId == coachId }
-
     fun isValidCoach(index: Int): Boolean {
         return isValidListIndex(index, coaches)
     }

@@ -56,8 +56,9 @@ fun runMenu() {
         when (val input = mainMenu()){
             1 -> coachMenu()
             2 -> playerMenu()
-
-            3 -> teamMenu()
+            3 -> if(coachVerify()){
+                teamMenu()
+            }else println("No coaches in system")
             8 -> save()
             9 -> load()
 
@@ -141,20 +142,20 @@ fun removeCoach() {
 
 
 fun coachVerify(): Boolean{
-    return playerController.numberOfPlayers() == 0
+    return coachController.numberOfCoaches() > 0
 }
 
 fun playerMenu() {
 
     val input = readNextInt(
         """
-                >----------------------------
-                >| 1. Add Player            |
-                >| 2. List Players          |
-                >| 3. Update Player info    |
-                >| 4. Remove Player         |
-                >| 5. Back                  |
-                >----------------------------
+             >----------------------------
+             >| 1. Add Player            |
+             >| 2. List Players          |
+             >| 3. Update Player info    |
+             >| 4. Remove Player         |
+             >| 5. Back                  |
+             >----------------------------
                 >   ===>
             """.trimMargin(">")
     )
@@ -198,7 +199,7 @@ fun updatePlayer(){
                     println("Update Failed")
                 }
             }else {
-                println("There are no coaches with coach ID: ${playerToUpdate}")
+                println("There are no players with player ID: ${playerToUpdate}")
             }
         }
 
@@ -222,55 +223,108 @@ fun playerVerify(): Boolean{
 }
 
 fun teamMenu(){
+    val input = readNextInt(
+        """
+                >----------------------------
+                >| 1. Add Team              |
+                >| 2. Add Player to Team    |
+                >| 3. List all Teams        |
+                >| 4. List team Details     |
+                >| 5. Update Team           |
+                >| 6. Delete Team           |
+                >| 7. Back                  |
+                >----------------------------
+                >   ===>
+        """.trimMargin(">")
+    )
+    when(input){
+        1->addTeam()
+        2-> if (teamVerify()){
+            addPlayerToTeam()
+        }else println("No teams in system")
+        3-> if(teamVerify()){
+            listAllTeams()
+        }else println("No teams in system")
+        4 -> if(teamVerify()){
+            teamDetails()
+        }else println("No teams in system")
+    }
+}
+
+fun addTeam(){
+    val teamName = readNextLine("Enter Team Name: \n")
+    listAllCoaches()
+
+    val teamCoachId = readNextInt("Enter the Team's coach ID: ")
+    val teamCoach = coachController.findCoach(teamCoachId)
+    if (teamCoach != null) {
+       val isAdded = teamController.addTeam(Team(0, teamName, mutableListOf(), teamCoach, false))
+
+        if (isAdded){
+            println("Added team Successfully")
+        }else{
+            println("Failed to Add team")
+        }
+    }else{
+        println("-----------------")
+    }
+}
+
+fun listAllTeams(){
+    println(teamController.listTeams())
+}
+
+fun updateTeam(){
 
 }
+
+fun teamVerify(): Boolean{
+    return teamController.numberOfTeams() > 0
+}
+
 
 fun back(){
     println("-----------------")
 }
 
-/*fun addPlayerToTeam() {
+fun addPlayerToTeam() {
+    println(playerController.listPlayers())
+    val playerId = readNextInt("Choose a playerId: ")
+    val player = playerController.findPlayer(playerId)
 
-    if (playerController.numberOfPlayers() == 0) {
-        println("No players in system")
-    } else if (coachController.numberOfCoaches() == 0) {
-        println("No coaches in system")
-    } else {
-        println(playerController.listPlayers())
-        val playerId = readNextInt("Choose a playerId: ")
-        println(coachController.listCoaches())
-        val coachId = readNextInt("Choose a coachId: ")
-
-        val isAdded = teamController.addPlayerToTeam(playerId, coachId)
-
-        if(isAdded){
-            println("Added Successfully")
-        }else{
-            println("Add Failed")
+    if (player != null) {
+        println(teamController.listTeams())
+        val teamId = readNextInt("Choose a teamId: ")
+        if (teamController.isValidTeam(teamId)) {
+            if (teamController.addPlayerToTeam(player, teamId)) {
+                println("Player added successfully!")
+            }else {
+                println("Failed to add player to Team")
+            }
+        } else {
+            println("There are no teams with team ID: ${teamId}")
         }
     }
-}*/
+}
 
-/*fun teamList() {
-    if (playerController.numberOfPlayers() == 0) {
-        println("No players in system")
-    } else if (coachController.numberOfCoaches() == 0) {
-        println("No coaches in system")
-    } else {
-        println(coachController.listCoaches())
-        val coachName = readNextLine("Enter a coach Name: \n")
-        val players = coachController.findCoachName(coachName)
+fun teamDetails() {
+        println(teamController.listTeams())
+        val teamId = readNextInt("Enter a team ID: \n")
+        val team = teamController.findTeam(teamId)
 
-        if (players.isEmpty()) {
-            println("No players assigned to this coach \n")
+        if (team == null) {
+            println("Invalid team \n --------------")
         } else {
-            println("$coachName's Team: ")
-            players.forEach {
-                println("Player name: ${it.name}")
+            println("${team.teamName} ")
+            if (team.player.isEmpty()){
+                println("No players on ${team.teamName}")
+            }else{
+                println("Players ")
+                team.player.forEach { player -> println(player.name)}
             }
         }
     }
-}*/
+
 
 fun save(){
     try {
