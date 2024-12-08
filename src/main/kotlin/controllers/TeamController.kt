@@ -47,11 +47,13 @@ class TeamController(serializerType: Serializer) {
     fun updateTeam(teamToUpdate: Int, teamName: String, coach: Coach): Boolean {
         val foundTeam = findTeam(teamToUpdate)
 
-        if (foundTeam != null){
+        return if (foundTeam != null) {
             foundTeam.teamName = teamName
             foundTeam.coach = coach
+            true
+        } else {
+            false
         }
-        return true
     }
 
     fun deleteTeam(indexToDelete: Int): Team? {
